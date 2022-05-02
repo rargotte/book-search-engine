@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Jumbotron, Container, Col, Form, Button, Card, CardColumns } from 'react-bootstrap';
 import { useMutation } from '@apollo/client';
 import Auth from '../utils/auth';
-import { saveBook, searchGoogleBooks } from '../utils/API';
+import { searchGoogleBooks } from '../utils/API';
 import { saveBookIds, getSavedBookIds } from '../utils/localStorage';
 import { SAVE_BOOK } from '../utils/mutation';
 
@@ -73,7 +73,6 @@ const SearchBooks = () => {
       const { data } = await saveBook({
         variables: { newBook: { ...bookToSave } },
       });
-
       setSavedBookIds([...savedBookIds, bookToSave.bookId]);
     } catch (err) {
       console.error(err);
@@ -114,9 +113,9 @@ const SearchBooks = () => {
             : 'Search for a book to begin'}
         </h2>
         <CardColumns>
-          {searchedBooks.map((book) => {
+          {searchedBooks.map((book, index) => {
             return (
-              <Card id={book.Id} border='dark'>
+              <Card key={book.bookId} border='dark'>
                 {book.image ? (
                   <Card.Img src={book.image} alt={`The cover for ${book.title}`} variant='top' />
                 ) : null}
